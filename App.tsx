@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { Briefcase, UserCheck, Clock, Building2, Megaphone, Home, Image, ShoppingBag, Handshake } from 'lucide-react';
 import { Language, CategoryType, ContentPost, Report, AdCampaign, BlacklistItem, Comment, InquiryMessage } from './types';
 import { TRANSLATIONS, LOCATIONS, BANNED_WORDS } from './constants';
 import LanguageSelector from './components/LanguageSelector';
@@ -288,8 +289,8 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F4F7FE] flex flex-col items-center font-sans">
-      <div className="w-full bg-black text-white py-1.5 text-center text-[10px] font-black uppercase tracking-widest relative z-[70]">
+    <div className="min-h-screen bg-[#f9fafb] flex flex-col items-center">
+      <div className="w-full bg-[#111827] text-white py-1.5 text-center text-[10px] font-semibold uppercase tracking-widest relative z-[70]">
         {lang === 'KR' ? '🌏 Yanji Lifestyle Portal • No Login' : '🌏 延吉生活门户 • 免登录'}
         <button onClick={() => setIsAdminMode(true)} className="absolute right-4 top-1/2 -translate-y-1/2 opacity-20 hover:opacity-100 transition-opacity">⚙️</button>
       </div>
@@ -298,36 +299,38 @@ const App: React.FC = () => {
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-gray-100">
           <div className="px-5 py-3 flex items-center justify-between">
             <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab(CategoryType.RECRUITMENT)}>
-              <div className="w-8 h-8 bg-gray-900 rounded-[12px] flex items-center justify-center font-black text-white text-base">Y</div>
+              <div className="w-8 h-8 bg-[#111827] rounded-[12px] flex items-center justify-center font-bold text-white text-base">Y</div>
               <div>
-                <h1 className="text-lg font-black text-gray-900 tracking-tighter leading-none">{t.appTitle}</h1>
+                <h1 className="text-[20px] font-bold text-[#111827] tracking-tight leading-none" style={{letterSpacing: '-0.03em'}}>{t.appTitle}</h1>
               </div>
             </div>
-            <button onClick={() => setLang(lang === 'KR' ? 'CN' : 'KR')} className="text-[10px] font-black px-3 py-1.5 border-2 border-gray-900 rounded-full hover:bg-black hover:text-white transition-all uppercase">
+            <button onClick={() => setLang(lang === 'KR' ? 'CN' : 'KR')} className="text-[10px] font-semibold px-3 py-1.5 border-2 border-[#111827] rounded-full hover:bg-[#111827] hover:text-white transition-all uppercase">
               {lang === 'KR' ? 'CN' : 'KR'}
             </button>
           </div>
           
           <nav className="grid grid-cols-2 gap-2 px-3 pb-3 md:flex md:flex-wrap md:gap-2 md:px-5 md:pb-4">
             {[
-              { id: CategoryType.RECRUITMENT, label: t.recruitment },
-              { id: CategoryType.RESUME, label: t.resume },
-              { id: CategoryType.PARTTIME, label: t.parttime },
-              { id: CategoryType.BUSINESS, label: t.business },
-              { id: CategoryType.PROMO, label: t.promo },
-              { id: CategoryType.REAL_ESTATE, label: t.realEstate },
-              { id: CategoryType.COMMUNITY_PHOTO, label: t.communityPhoto },
-              { id: CategoryType.COMMUNITY_USED, label: t.communityUsed },
-              { id: CategoryType.PARTNERSHIP, label: t.partnership },
+              { id: CategoryType.RECRUITMENT, label: t.recruitment, icon: Briefcase },
+              { id: CategoryType.RESUME, label: t.resume, icon: UserCheck },
+              { id: CategoryType.PARTTIME, label: t.parttime, icon: Clock },
+              { id: CategoryType.BUSINESS, label: t.business, icon: Building2 },
+              { id: CategoryType.PROMO, label: t.promo, icon: Megaphone },
+              { id: CategoryType.REAL_ESTATE, label: t.realEstate, icon: Home },
+              { id: CategoryType.COMMUNITY_PHOTO, label: t.communityPhoto, icon: Image },
+              { id: CategoryType.COMMUNITY_USED, label: t.communityUsed, icon: ShoppingBag },
+              { id: CategoryType.PARTNERSHIP, label: t.partnership, icon: Handshake },
             ].map(cat => (
               <button 
                 key={cat.id} 
                 onClick={() => setActiveTab(cat.id)}
-                className={`flex items-center justify-center rounded-xl text-[13px] font-bold h-[48px] md:h-[36px] md:px-4 transition-all ${
-                  activeTab === cat.id ? 'bg-gray-900 text-white shadow-md' : 'bg-gray-50 text-gray-400 hover:text-gray-600'
+                className={`flex flex-col items-center justify-center gap-1 rounded-[14px] text-[15px] font-semibold h-[48px] md:h-[40px] md:px-4 transition-all ${
+                  activeTab === cat.id ? 'bg-[#111827] text-white shadow-md' : 'bg-white border border-[#e5e7eb] text-[#6b7280] hover:border-[#2563eb] hover:text-[#111827]'
                 }`}
+                style={{letterSpacing: '-0.02em'}}
               >
-                {cat.label}
+                <cat.icon size={20} strokeWidth={1.8} />
+                <span className="text-[13px] md:text-[15px]">{cat.label}</span>
               </button>
             ))}
           </nav>
@@ -336,20 +339,20 @@ const App: React.FC = () => {
         <main className="flex-1 p-4 space-y-4">
            <div className="space-y-3">
             <div className="relative">
-              <input className="w-full bg-gray-50 border-none p-4 pl-12 rounded-[24px] outline-none focus:ring-2 focus:ring-yellow-400 font-bold shadow-sm" placeholder={t.searchPlaceholder} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+              <input className="w-full bg-white border border-[#e5e7eb] p-4 pl-12 rounded-[24px] outline-none focus:ring-2 focus:ring-[#2563eb] text-[14px] font-normal shadow-sm" placeholder={t.searchPlaceholder} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
               <span className="absolute left-5 top-1/2 -translate-y-1/2 text-lg opacity-30">🔍</span>
             </div>
-            <select className="bg-gray-50 px-5 py-2.5 rounded-full text-[11px] font-black border-none outline-none appearance-none shadow-sm cursor-pointer" onChange={e => setFilterRegion(e.target.value)}>
+            <select className="bg-white border border-[#e5e7eb] px-5 py-2.5 rounded-full text-[12px] font-medium outline-none appearance-none shadow-sm cursor-pointer" onChange={e => setFilterRegion(e.target.value)}>
               <option value="">{t.filterRegion} ({t.all})</option>
               {LOCATIONS.map(l => <option key={l} value={l}>{l}</option>)}
             </select>
           </div>
 
-          <div className="bg-white rounded-3xl border border-gray-100 p-6 flex items-start gap-4 shadow-sm mb-3">
+          <div className="bg-white rounded-[16px] border border-[#e5e7eb] p-6 flex items-start gap-4 shadow-sm mb-3">
             <div className="w-10 h-10 bg-yellow-50 rounded-xl flex items-center justify-center text-2xl shadow-inner">🛡️</div>
             <div>
-              <p className="text-xs text-gray-900 font-black mb-0.5">{t.safetyNotice}</p>
-              <p className="text-[10px] text-gray-400 font-medium leading-relaxed">{t.noLoginInfo}</p>
+              <p className="text-[13px] text-[#111827] font-semibold mb-0.5">{t.safetyNotice}</p>
+              <p className="text-[12px] text-[#6b7280] font-normal leading-relaxed">{t.noLoginInfo}</p>
             </div>
           </div>
 
@@ -381,7 +384,7 @@ const App: React.FC = () => {
 
         <button 
           onClick={() => setShowForm(true)}
-          className="fixed bottom-8 right-1/2 translate-x-[110px] sm:translate-x-[260px] w-16 h-16 bg-gray-900 text-white rounded-[24px] shadow-2xl flex items-center justify-center text-3xl font-light hover:scale-110 active:scale-95 transition-all z-[60] border-4 border-white"
+          className="fixed bottom-8 right-1/2 translate-x-[110px] sm:translate-x-[260px] w-16 h-16 bg-[#111827] text-white rounded-[24px] shadow-2xl flex items-center justify-center text-3xl font-light hover:scale-110 hover:bg-[#1f2937] active:scale-95 transition-all z-[60] border-4 border-white"
         >
           +
         </button>
