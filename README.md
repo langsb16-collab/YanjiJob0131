@@ -9,7 +9,7 @@
 ## 🌐 URLs
 
 - **Production**: https://yanjijob0131.pages.dev
-- **Latest Deployment**: https://0962d982.yanjijob0131.pages.dev
+- **Latest Deployment**: https://bd462fb5.yanjijob0131.pages.dev
 - **GitHub**: https://github.com/langsb16-collab/YanjiJob0131
 
 ## ✨ 주요 기능
