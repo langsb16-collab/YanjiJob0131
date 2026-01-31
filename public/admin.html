@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자 페이지 - 연길 알바천국</title>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background-color: #f9fafb;
+      letter-spacing: -0.02em;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div id="root"></div>
+  
+  <script type="module">
+    import React, { useState, useEffect } from 'https://esm.sh/react@19.2.4';
+    import ReactDOM from 'https://esm.sh/react-dom@19.2.4/client';
+
+    function AdminPage() {
+      const [posts, setPosts] = useState([]);
+      const [blacklist, setBlacklist] = useState([]);
+      const [activeTab, setActiveTab] = useState('posts');
+      const [blockVal, setBlockVal] = useState('');
+
+      useEffect(() => {
+        const saved = localStorage.getItem('yj_hub_all_posts_v4');
+        const savedBlacklist = localStorage.getItem('yj_hub_blacklist');
+        if (saved) setPosts(JSON.parse(saved));
+        if (savedBlacklist) setBlacklist(JSON.parse(savedBlacklist));
+      }, []);
+
+      const deletePost = (id) => {
+        const updated = posts.filter(p => p.id !== id);
+        setPosts(updated);
+        localStorage.setItem('yj_hub_all_posts_v4', JSON.stringify(updated));
+      };
+
+      const addBlacklist = () => {
+        if (!blockVal) return;
+        const newItem = {
+          id: Math.random().toString(),
+          type: 'phone',
+          value: blockVal,
+          reason: '관리자 차단',
+          createdAt: new Date().toLocaleDateString()
+        };
+        const updated = [...blacklist, newItem];
+        setBlacklist(updated);
+        localStorage.setItem('yj_hub_blacklist', JSON.stringify(updated));
+        setBlockVal('');
+      };
+
+      const stats = {
+        total: posts.length,
+        premium: posts.filter(p => p.isPremium).length,
+        pending: posts.filter(p => p.status === 'pending').length
+      };
+
+      return React.createElement('div', { className: 'min-h-screen bg-[#f9fafb] p-8' },
+        React.createElement('div', { className: 'max-w-7xl mx-auto' },
+          React.createElement('header', { className: 'mb-10' },
+            React.createElement('div', { className: 'flex items-center justify-between mb-6' },
+              React.createElement('div', null,
+                React.createElement('h1', { className: 'text-4xl font-bold text-[#111827] mb-2' }, '🛠️ 관리자 페이지'),
+                React.createElement('p', { className: 'text-[#6b7280]' }, '등록된 게시글 및 사용자 정보를 관리합니다')
+              ),
+              React.createElement('a', { 
+                href: '/', 
+                className: 'px-6 py-3 bg-[#111827] text-white rounded-full font-semibold hover:bg-[#1f2937] transition-all'
+              }, '← 홈으로')
+            ),
+            React.createElement('div', { className: 'grid grid-cols-3 gap-6' },
+              React.createElement('div', { className: 'bg-white p-6 rounded-2xl border border-[#e5e7eb]' },
+                React.createElement('p', { className: 'text-sm text-[#6b7280] font-semibold mb-2' }, '전체 게시글'),
+                React.createElement('p', { className: 'text-4xl font-bold text-[#111827]' }, stats.total)
+              ),
+              React.createElement('div', { className: 'bg-white p-6 rounded-2xl border border-[#e5e7eb]' },
+                React.createElement('p', { className: 'text-sm text-[#6b7280] font-semibold mb-2' }, '프리미엄'),
+                React.createElement('p', { className: 'text-4xl font-bold text-emerald-600' }, stats.premium)
+              ),
+              React.createElement('div', { className: 'bg-white p-6 rounded-2xl border border-[#e5e7eb]' },
+                React.createElement('p', { className: 'text-sm text-[#6b7280] font-semibold mb-2' }, '승인 대기'),
+                React.createElement('p', { className: 'text-4xl font-bold text-amber-600' }, stats.pending)
+              )
+            )
+          ),
+
+          React.createElement('nav', { className: 'mb-8 flex gap-4' },
+            React.createElement('button', {
+              onClick: () => setActiveTab('posts'),
+              className: `px-6 py-3 rounded-full font-semibold transition-all ${activeTab === 'posts' ? 'bg-[#111827] text-white' : 'bg-white text-[#6b7280] border border-[#e5e7eb]'}`
+            }, '📝 게시글 관리 (' + posts.length + ')'),
+            React.createElement('button', {
+              onClick: () => setActiveTab('blacklist'),
+              className: `px-6 py-3 rounded-full font-semibold transition-all ${activeTab === 'blacklist' ? 'bg-[#111827] text-white' : 'bg-white text-[#6b7280] border border-[#e5e7eb]'}`
+            }, '🛡️ 블랙리스트 (' + blacklist.length + ')')
+          ),
+
+          activeTab === 'posts' && React.createElement('div', { className: 'space-y-4' },
+            posts.length === 0 && React.createElement('div', { className: 'bg-white p-12 rounded-2xl text-center border border-[#e5e7eb]' },
+              React.createElement('p', { className: 'text-[#6b7280] text-lg' }, '등록된 게시글이 없습니다')
+            ),
+            posts.map(post => 
+              React.createElement('div', { 
+                key: post.id, 
+                className: 'bg-white p-6 rounded-2xl border border-[#e5e7eb] hover:shadow-lg transition-shadow'
+              },
+                React.createElement('div', { className: 'flex justify-between items-start mb-4' },
+                  React.createElement('div', { className: 'flex-1' },
+                    React.createElement('div', { className: 'flex items-center gap-3 mb-2' },
+                      React.createElement('h3', { className: 'text-xl font-bold text-[#111827]' }, post.titleKR),
+                      post.isPremium && React.createElement('span', { className: 'px-3 py-1 bg-emerald-100 text-emerald-600 text-xs font-bold rounded-full' }, '프리미엄'),
+                      post.status === 'pending' && React.createElement('span', { className: 'px-3 py-1 bg-amber-100 text-amber-600 text-xs font-bold rounded-full' }, '승인대기')
+                    ),
+                    React.createElement('p', { className: 'text-sm text-[#6b7280] mb-2' }, post.titleCN),
+                    React.createElement('div', { className: 'flex gap-4 text-sm text-[#6b7280]' },
+                      React.createElement('span', null, '📞 ' + (post.phoneNumber || '-')),
+                      React.createElement('span', null, '📍 ' + post.location),
+                      React.createElement('span', null, '📅 ' + post.createdAt),
+                      React.createElement('span', null, '👁️ ' + post.views),
+                      React.createElement('span', null, '👍 ' + post.likes)
+                    )
+                  ),
+                  React.createElement('button', {
+                    onClick: () => deletePost(post.id),
+                    className: 'px-4 py-2 bg-red-50 text-red-600 rounded-lg font-semibold text-sm hover:bg-red-100 transition-colors'
+                  }, '삭제')
+                ),
+                post.descriptionKR && React.createElement('p', { className: 'text-[#111827] text-sm mt-3 p-4 bg-gray-50 rounded-lg' }, post.descriptionKR),
+                post.comments && post.comments.length > 0 && React.createElement('div', { className: 'mt-4 pt-4 border-t border-[#e5e7eb]' },
+                  React.createElement('p', { className: 'text-xs font-bold text-[#6b7280] mb-2' }, '💬 댓글 ' + post.comments.length + '개'),
+                  React.createElement('div', { className: 'space-y-2' },
+                    post.comments.map(c =>
+                      React.createElement('div', { key: c.id, className: 'text-sm p-3 bg-gray-50 rounded-lg' },
+                        React.createElement('span', { className: 'font-bold' }, c.nickname + ': '),
+                        React.createElement('span', null, c.content)
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          ),
+
+          activeTab === 'blacklist' && React.createElement('div', null,
+            React.createElement('div', { className: 'bg-white p-6 rounded-2xl border border-[#e5e7eb] mb-6' },
+              React.createElement('h3', { className: 'text-lg font-bold text-[#111827] mb-4' }, '새 번호 차단'),
+              React.createElement('div', { className: 'flex gap-3' },
+                React.createElement('input', {
+                  type: 'text',
+                  value: blockVal,
+                  onChange: (e) => setBlockVal(e.target.value),
+                  placeholder: '전화번호 입력 (예: 138-0000-1111)',
+                  className: 'flex-1 px-4 py-3 border border-[#e5e7eb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563eb]'
+                }),
+                React.createElement('button', {
+                  onClick: addBlacklist,
+                  className: 'px-6 py-3 bg-[#111827] text-white rounded-lg font-semibold hover:bg-[#1f2937] transition-colors'
+                }, '차단')
+              )
+            ),
+            React.createElement('div', { className: 'space-y-3' },
+              blacklist.length === 0 && React.createElement('div', { className: 'bg-white p-12 rounded-2xl text-center border border-[#e5e7eb]' },
+                React.createElement('p', { className: 'text-[#6b7280] text-lg' }, '차단된 사용자가 없습니다')
+              ),
+              blacklist.map(item =>
+                React.createElement('div', { 
+                  key: item.id, 
+                  className: 'bg-white p-5 rounded-2xl border border-[#e5e7eb] flex justify-between items-center'
+                },
+                  React.createElement('div', null,
+                    React.createElement('p', { className: 'font-bold text-[#111827]' }, '🚫 ' + item.value),
+                    React.createElement('p', { className: 'text-sm text-[#6b7280] mt-1' }, item.reason + ' • ' + item.createdAt)
+                  )
+                )
+              )
+            )
+          )
+        )
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(React.createElement(AdminPage));
+  </script>
+</body>
+</html>
