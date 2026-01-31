@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Briefcase, UserCheck, Clock, Building2, Megaphone, Home, Image, ShoppingBag, Handshake } from 'lucide-react';
+import { Briefcase, UserCheck, Clock, Building2, Megaphone, Home, Image, ShoppingBag, Handshake, BarChart3 } from 'lucide-react';
 import { Language, CategoryType, ContentPost, Report, AdCampaign, BlacklistItem, Comment, InquiryMessage } from './types';
 import { TRANSLATIONS, LOCATIONS, BANNED_WORDS } from './constants';
 import LanguageSelector from './components/LanguageSelector';
@@ -8,6 +8,8 @@ import ContentCard from './components/ContentCard';
 import ContentForm from './components/ContentForm';
 import ChatInterface from './components/ChatInterface';
 import AdminDashboard from './components/AdminDashboard';
+import StatsDashboard from './components/StatsDashboard';
+import { useNotifications } from './components/NotificationBadge';
 
 const App: React.FC = () => {
   const [lang, setLang] = useState<Language | null>(null);
@@ -131,6 +133,7 @@ const App: React.FC = () => {
 
     setPosts(prev => prev.map(p => {
       if (p.id === postId) {
+        addNotification(`${nickname}님이 댓글을 남겼습니다: ${content.substring(0, 30)}...`);
         return { ...p, comments: [newComment, ...p.comments].sort((a, b) => b.likes - a.likes) };
       }
       return p;
