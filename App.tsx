@@ -24,12 +24,11 @@ const App: React.FC = () => {
   const [filterRegion, setFilterRegion] = useState('');
 
   useEffect(() => {
-    const saved = localStorage.getItem('yj_hub_all_posts_v4');
     const savedBlacklist = localStorage.getItem('yj_hub_blacklist');
-    if (saved) setPosts(JSON.parse(saved));
     if (savedBlacklist) setBlacklist(JSON.parse(savedBlacklist));
     
-    if (!saved) {
+    // Always load sample posts (no localStorage dependency)
+    if (true) {
       const samplePosts: ContentPost[] = [
         // 구인 샘플
         { id: 'r1', type: CategoryType.RECRUITMENT, titleKR: '카페 직원 모집 (월 260만)', titleCN: '咖啡店招聘 (月260万)', category: '카페', location: '연길 (延吉)', descriptionKR: '주 5일, 9시-18시', descriptionCN: '周5天, 9-18点', phoneNumber: '138-1111-1111', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-03-31', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 5, dislikes: 0, views: 50, comments: [] },
