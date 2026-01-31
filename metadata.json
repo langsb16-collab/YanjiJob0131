@@ -1,0 +1,8 @@
+{
+  "name": "Yanji Job & Part-time Hub (연길 알바천국)",
+  "description": "A bilingual (Korean/Chinese) recruitment platform for the Yanji/Yanbian region, featuring no-login job postings and integrated multimedia chat.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
