@@ -14,7 +14,7 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<CategoryType>(CategoryType.RECRUITMENT);
   const [showForm, setShowForm] = useState(false);
   const [isAdminMode, setIsAdminMode] = useState(false);
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(true); // 관리자 페이지 비밀번호 없이 즉시 접속
   const [selectedChatPost, setSelectedChatPost] = useState<ContentPost | null>(null);
   const [posts, setPosts] = useState<ContentPost[]>([]);
   const [reports, setReports] = useState<Report[]>([]);
