@@ -29,31 +29,53 @@ const App: React.FC = () => {
     if (savedBlacklist) setBlacklist(JSON.parse(savedBlacklist));
     
     if (!saved) {
-      setPosts([
-        {
-          id: 's1',
-          type: CategoryType.BUSINESS,
-          titleKR: '연길 서시장 인근 정통 한식당 [연길맛집]',
-          titleCN: '延吉西市场附近正宗韩餐 [延吉美食]',
-          shopName: '연길맛집',
-          category: '식당·카페',
-          location: '연길 (延吉)',
-          descriptionKR: '30년 전통의 맛을 자랑합니다. 단체석 완비.',
-          descriptionCN: '30年传统美味。提供团体席。',
-          phoneNumber: '138-0000-1111',
-          createdAt: new Date().toLocaleDateString(),
-          expiresAt: '2025-12-31',
-          isUrgent: false,
-          isPremium: true,
-          isAd: false,
-          status: 'active',
-          reportCount: 0,
-          likes: 42,
-          dislikes: 1,
-          views: 1205,
-          comments: []
-        }
-      ]);
+      const samplePosts: ContentPost[] = [
+        // 구인 샘플
+        { id: 'r1', type: CategoryType.RECRUITMENT, titleKR: '카페 직원 모집 (월 260만)', titleCN: '咖啡店招聘 (月260万)', category: '카페', location: '연길 (延吉)', descriptionKR: '주 5일, 9시-18시', descriptionCN: '周5天, 9-18点', phoneNumber: '138-1111-1111', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-03-31', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 5, dislikes: 0, views: 50, comments: [] },
+        { id: 'r2', type: CategoryType.RECRUITMENT, titleKR: '물류센터 단기 근무자 구함', titleCN: '物流中心短期工', category: '물류', location: '훈춘 (珲春)', descriptionKR: '체력 좋으신 분', descriptionCN: '体力好', phoneNumber: '138-1111-2222', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-02-28', isUrgent: true, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 8, dislikes: 0, views: 120, comments: [] },
+        { id: 'r3', type: CategoryType.RECRUITMENT, titleKR: '식당 주방보조 급구', titleCN: '餐厅厨房助理急招', category: '식당', location: '연길 (延吉)', descriptionKR: '경력 무관', descriptionCN: '无经验要求', phoneNumber: '138-1111-3333', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-03-15', isUrgent: true, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 3, dislikes: 0, views: 80, comments: [] },
+        
+        // 구직 샘플
+        { id: 'j1', type: CategoryType.RESUME, titleKR: '웹디자이너 경력 5년 구직중', titleCN: 'Web设计师5年经验求职', category: '디자인', location: '연길 (延吉)', descriptionKR: 'Figma, Photoshop 능숙', descriptionCN: '熟练Figma, Photoshop', phoneNumber: '138-2222-1111', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-04-30', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 12, dislikes: 0, views: 200, comments: [] },
+        { id: 'j2', type: CategoryType.RESUME, titleKR: '운전기사 일자리 찾습니다', titleCN: '司机求职', category: '운전', location: '도문 (图们)', descriptionKR: '1종 보통, 무사고 10년', descriptionCN: '1类驾照, 10年无事故', phoneNumber: '138-2222-2222', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-03-31', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 6, dislikes: 0, views: 90, comments: [] },
+        { id: 'j3', type: CategoryType.RESUME, titleKR: '사무직 취업 희망', titleCN: '求职办公室工作', category: '사무', location: '연길 (延吉)', descriptionKR: 'Excel, 한중 번역 가능', descriptionCN: 'Excel, 韩中翻译', phoneNumber: '138-2222-3333', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-04-15', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 9, dislikes: 0, views: 150, comments: [] },
+        
+        // 알바 샘플
+        { id: 'p1', type: CategoryType.PARTTIME, titleKR: '편의점 야간 알바 구함', titleCN: '便利店夜班兼职', category: '편의점', location: '연길 (延吉)', descriptionKR: '주 3일, 22시-06시', descriptionCN: '周3天, 22-06点', phoneNumber: '138-3333-1111', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-03-20', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 7, dislikes: 0, views: 110, comments: [] },
+        { id: 'p2', type: CategoryType.PARTTIME, titleKR: '행사 스태프 모집', titleCN: '活动工作人员招聘', category: '행사', location: '연길 (延吉)', descriptionKR: '주말만, 일당 15만원', descriptionCN: '仅周末, 日薪15万', phoneNumber: '138-3333-2222', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-02-28', isUrgent: true, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 15, dislikes: 0, views: 250, comments: [] },
+        { id: 'p3', type: CategoryType.PARTTIME, titleKR: '카페 주말 알바', titleCN: '咖啡店周末兼职', category: '카페', location: '연길 (延吉)', descriptionKR: '토일 10-18시', descriptionCN: '周六日 10-18点', phoneNumber: '138-3333-3333', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-03-31', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 11, dislikes: 0, views: 180, comments: [] },
+        
+        // 비즈니스 샘플 (기존 + 2개 추가)
+        { id: 's1', type: CategoryType.BUSINESS, titleKR: '연길 서시장 인근 정통 한식당 [연길맛집]', titleCN: '延吉西市场附近正宗韩餐 [延吉美食]', shopName: '연길맛집', category: '식당·카페', location: '연길 (延吉)', descriptionKR: '30년 전통의 맛을 자랑합니다. 단체석 완비.', descriptionCN: '30年传统美味。提供团体席。', phoneNumber: '138-0000-1111', createdAt: new Date().toLocaleDateString(), expiresAt: '2025-12-31', isUrgent: false, isPremium: true, isAd: false, status: 'active', reportCount: 0, likes: 42, dislikes: 1, views: 1205, comments: [] },
+        { id: 'b2', type: CategoryType.BUSINESS, titleKR: '온라인 쇼핑몰 공동 운영자 모집', titleCN: '在线商城合伙人招募', shopName: '글로벌샵', category: '온라인', location: '연길 (延吉)', descriptionKR: '의류 전문, 수익 배분', descriptionCN: '服装专业, 利润分成', phoneNumber: '138-4444-2222', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-04-30', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 18, dislikes: 0, views: 300, comments: [] },
+        { id: 'b3', type: CategoryType.BUSINESS, titleKR: '소자본 창업 파트너 찾습니다', titleCN: '小资本创业合伙人', shopName: '스타트업', category: '창업', location: '연길 (延吉)', descriptionKR: '배달 전문점 오픈 예정', descriptionCN: '外卖专门店开业', phoneNumber: '138-4444-3333', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-03-31', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 22, dislikes: 0, views: 400, comments: [] },
+        
+        // 홍보/광고 샘플
+        { id: 'pr1', type: CategoryType.PROMO, titleKR: 'SNS 마케팅 대행', titleCN: 'SNS营销代理', category: '마케팅', location: '연길 (延吉)', descriptionKR: '인스타/틱톡 전문', descriptionCN: 'Instagram/TikTok专业', phoneNumber: '138-5555-1111', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-06-30', isUrgent: false, isPremium: true, isAd: true, status: 'active', reportCount: 0, likes: 30, dislikes: 2, views: 500, comments: [] },
+        { id: 'pr2', type: CategoryType.PROMO, titleKR: '전단지 배포 광고', titleCN: '传单分发广告', category: '광고', location: '연길 (延吉)', descriptionKR: '효과적인 오프라인 홍보', descriptionCN: '有效的线下推广', phoneNumber: '138-5555-2222', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-05-31', isUrgent: false, isPremium: false, isAd: true, status: 'active', reportCount: 0, likes: 8, dislikes: 1, views: 150, comments: [] },
+        { id: 'pr3', type: CategoryType.PROMO, titleKR: '지역 상권 광고 진행', titleCN: '地区商圈广告', category: '상권', location: '연길 (延吉)', descriptionKR: '맞춤형 광고 솔루션', descriptionCN: '定制广告方案', phoneNumber: '138-5555-3333', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-07-31', isUrgent: false, isPremium: false, isAd: true, status: 'active', reportCount: 0, likes: 14, dislikes: 0, views: 220, comments: [] },
+        
+        // 부동산 샘플
+        { id: 're1', type: CategoryType.REAL_ESTATE, titleKR: '연길 시내 원룸 임대', titleCN: '延吉市内单间出租', category: '원룸', location: '연길 (延吉)', descriptionKR: '월세 80만원, 풀옵션', descriptionCN: '月租80万, 全配', phoneNumber: '138-6666-1111', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-04-30', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 25, dislikes: 0, views: 600, comments: [] },
+        { id: 're2', type: CategoryType.REAL_ESTATE, titleKR: '상가 점포 매매', titleCN: '商铺店面买卖', category: '상가', location: '연길 (延吉)', descriptionKR: '1층 50평, 역세권', descriptionCN: '1楼50坪, 地铁站', phoneNumber: '138-6666-2222', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-06-30', isUrgent: false, isPremium: true, isAd: false, status: 'active', reportCount: 0, likes: 35, dislikes: 0, views: 800, comments: [] },
+        { id: 're3', type: CategoryType.REAL_ESTATE, titleKR: '아파트 전세', titleCN: '公寓全租', category: '아파트', location: '연길 (延吉)', descriptionKR: '33평 3룸, 주차 가능', descriptionCN: '33坪3室, 可停车', phoneNumber: '138-6666-3333', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-05-31', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 40, dislikes: 0, views: 950, comments: [] },
+        
+        // 사진 자랑 샘플
+        { id: 'ph1', type: CategoryType.COMMUNITY_PHOTO, titleKR: '연길 야경 촬영', titleCN: '延吉夜景摄影', category: '풍경', location: '연길 (延吉)', descriptionKR: '아름다운 야경 공유', descriptionCN: '美丽夜景分享', phoneNumber: '138-7777-1111', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-12-31', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 50, dislikes: 0, views: 1200, comments: [] },
+        { id: 'ph2', type: CategoryType.COMMUNITY_PHOTO, titleKR: '가족 여행 사진', titleCN: '家庭旅行照片', category: '여행', location: '백두산', descriptionKR: '백두산 여행 기록', descriptionCN: '长白山旅行记录', phoneNumber: '138-7777-2222', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-12-31', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 65, dislikes: 0, views: 1500, comments: [] },
+        { id: 'ph3', type: CategoryType.COMMUNITY_PHOTO, titleKR: '자연 풍경 작품', titleCN: '自然风景作品', category: '자연', location: '두만강', descriptionKR: '두만강변 풍경', descriptionCN: '图们江边风景', phoneNumber: '138-7777-3333', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-12-31', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 72, dislikes: 0, views: 1800, comments: [] },
+        
+        // 중고 거래 샘플
+        { id: 'u1', type: CategoryType.COMMUNITY_USED, titleKR: '아이폰 중고 판매', titleCN: 'iPhone二手出售', category: '전자기기', location: '연길 (延吉)', descriptionKR: '아이폰 13, 배터리 95%', descriptionCN: 'iPhone 13, 电池95%', phoneNumber: '138-8888-1111', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-03-31', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 20, dislikes: 0, views: 400, comments: [] },
+        { id: 'u2', type: CategoryType.COMMUNITY_USED, titleKR: '중고 자전거 팝니다', titleCN: '二手自行车出售', category: '자전거', location: '연길 (延吉)', descriptionKR: '거의 새것, 5만원', descriptionCN: '几乎全新, 5万', phoneNumber: '138-8888-2222', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-02-28', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 10, dislikes: 0, views: 150, comments: [] },
+        { id: 'u3', type: CategoryType.COMMUNITY_USED, titleKR: '전자렌지 저렴히', titleCN: '微波炉低价', category: '가전', location: '연길 (延吉)', descriptionKR: '2년 사용, 3만원', descriptionCN: '使用2年, 3万', phoneNumber: '138-8888-3333', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-03-15', isUrgent: true, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 8, dislikes: 0, views: 120, comments: [] },
+        
+        // 동업 & 제휴 샘플
+        { id: 'pa1', type: CategoryType.PARTNERSHIP, titleKR: '카페 동업자 모집', titleCN: '咖啡店合伙人招募', category: '카페', location: '연길 (延吉)', descriptionKR: '초기 투자 5천만원', descriptionCN: '初始投资5千万', phoneNumber: '138-9999-1111', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-04-30', isUrgent: false, isPremium: false, isAd: false, status: 'active', reportCount: 0, likes: 28, dislikes: 0, views: 550, comments: [] },
+        { id: 'pa2', type: CategoryType.PARTNERSHIP, titleKR: '식품 유통 제휴 제안', titleCN: '食品流通合作提案', category: '유통', location: '연길 (延吉)', descriptionKR: '수입 식품 유통망 보유', descriptionCN: '拥有进口食品渠道', phoneNumber: '138-9999-2222', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-05-31', isUrgent: false, isPremium: false, isAd: false, status: 'pending', reportCount: 0, likes: 32, dislikes: 0, views: 620, comments: [] },
+        { id: 'pa3', type: CategoryType.PARTNERSHIP, titleKR: '공동 브랜드 런칭', titleCN: '共同品牌推出', category: '브랜드', location: '연길 (延吉)', descriptionKR: '패션 브랜드 런칭 계획', descriptionCN: '时尚品牌推出计划', phoneNumber: '138-9999-3333', createdAt: new Date().toLocaleDateString(), expiresAt: '2026-06-30', isUrgent: false, isPremium: true, isAd: false, status: 'pending', reportCount: 0, likes: 45, dislikes: 0, views: 750, comments: [] }
+      ];
+      setPosts(samplePosts);
     }
   }, []);
 
