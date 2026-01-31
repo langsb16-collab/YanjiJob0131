@@ -8,20 +8,25 @@
 
 ## 🌐 URLs
 
-- **Production**: https://yanjijob0131.pages.dev
-- **Latest Deployment**: https://bd462fb5.yanjijob0131.pages.dev
+- **Production**: https://huan.my (Main Domain)
+- **Latest Deployment**: https://48da9e0f.yanjijob0131.pages.dev
 - **GitHub**: https://github.com/langsb16-collab/YanjiJob0131
 
 ## ✨ 주요 기능
 
-- 연길 지역 알바 정보 검색 및 조회
+- 연길 지역 9가지 카테고리 정보 검색 및 조회 (구인/구직/알바/비즈니스/홍보/부동산/사진자랑/중고거래/동업&제휴)
+- **관리자 페이지**: 아이디/비번 없이 ⚙️ 버튼으로 즉시 접속 가능
+- 게시글/댓글 CRUD 관리, 파트너십 승인/거절, 블랙리스트 관리
 - Google Gemini AI 기반 채팅 인터페이스
+- Pretendard 폰트 + Lucide 아이콘 + 크몽 스타일 UI
 - 반응형 디자인으로 모바일/데스크톱 지원
 
 ## 🛠 기술 스택
 
 - **Frontend**: React 19 + TypeScript + Vite
+- **UI**: Pretendard 폰트 + Lucide 아이콘 + 크몽 스타일 컬러
 - **AI Integration**: Google Gemini API
+- **Storage**: LocalStorage 기반 데이터 관리
 - **Deployment**: Cloudflare Pages
 - **Version Control**: Git + GitHub
 
@@ -69,8 +74,15 @@ npx wrangler pages deploy dist --project-name yanjijob0131
 
 - **플랫폼**: Cloudflare Pages
 - **상태**: ✅ Active
+- **메인 도메인**: https://huan.my
 - **프로젝트 이름**: yanjijob0131
 - **마지막 업데이트**: 2026-01-31
+
+## 🔑 관리자 페이지 접속 방법
+
+1. 사이트 상단 ⚙️ 아이콘 클릭
+2. 즉시 관리자 대시보드로 이동 (아이디/비번 없음)
+3. 대시보드/게시글/파트너십/댓글/신고/블랙리스트 관리 가능
 
 ## 📄 라이선스
 
